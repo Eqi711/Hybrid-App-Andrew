@@ -36,6 +36,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# android emulator
+/.idea
+
 example
 
 # generated native folders
