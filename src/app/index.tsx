@@ -1,251 +1,216 @@
-import { useRef, useState } from 'react';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    SafeAreaView,
+    ScrollView,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import Svg, { Path } from 'react-native-svg';
 
-const MONO_FONT = Platform.select({
-  ios: 'Menlo',
-  android: 'monospace',
-  default: 'monospace',
-});
-
-export default function HomeScreen() {
-  const [username, setUsername] = useState('');
+export default function LoginScreen() {
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [userFocused, setUserFocused] = useState(false);
-  const [passFocused, setPassFocused] = useState(false);
-  const passwordInput = useRef<TextInput>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
-  function handleSignIn() {
-    if (!username.trim() || !password) {
-      setMessage('CREDENTIAL_EMPTY: OPERATOR ID AND ACCESS KEY REQUIRED.');
-      return;
-    }
-
-    setMessage('TERMINAL_STANDBY: NODE AUTHENTICATION PROTOCOL UNLINKED.');
-  }
+  const handleLogin = () => {
+    // Front-end UI stage: Handle login interaction or navigation here
+    console.log({ identifier, password, rememberMe });
+  };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#0A0A0A]">
-      <Stack.Screen options={{ headerShown: false }} />
-      <StatusBar style="light" />
-
+    <SafeAreaView className="flex-1 bg-background">
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        className="flex-1">
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
         <ScrollView
-          contentContainerClassName="flex-grow justify-between px-5 py-6 sm:px-10"
-          keyboardShouldPersistTaps="handled">
-          
-          {/* Top Telemetry Header */}
-          <View>
-            <View className="flex-row items-center justify-between border-b border-[#262626] pb-3">
-              <View className="flex-row items-center gap-2">
-                <Text style={{ fontFamily: MONO_FONT }} className="text-xs text-[#FF2A2A] font-bold">
-                  +
-                </Text>
-                <Text style={{ fontFamily: MONO_FONT }} className="text-[11px] uppercase tracking-wider text-[#4AF626]">
-                  ● SYS_ONLINE // NODE_US-09
-                </Text>
-              </View>
-              <Text style={{ fontFamily: MONO_FONT }} className="text-[11px] uppercase tracking-widest text-[#737373]">
-                REV: 4.8.2 // SEC-L5
-              </Text>
-            </View>
-
-            <View className="mt-8">
-              <View className="flex-row items-center gap-2">
-                <View className="h-2 w-2 bg-[#FF2A2A]" />
-                <Text
-                  style={{ fontFamily: MONO_FONT }}
-                  className="text-[10px] font-bold tracking-[2px] uppercase text-[#A3A3A3]">
-                  [ PROTOCOL: APEX-GATE-99 ]
-                </Text>
-              </View>
-              
-              <Text className="mt-2 text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#EAEAEA]">
-                RESTRICTED{'\n'}ACCESS
-              </Text>
-
-              <Text
-                style={{ fontFamily: MONO_FONT }}
-                className="mt-2 text-[11px] uppercase tracking-wider text-[#737373]">
-                AUTHORIZED PERSONNEL ONLY /// HARDWARE ENCRYPTION ACTIVE
-              </Text>
-            </View>
-          </View>
-
-          {/* Form Blueprint Container */}
-          <View className="my-8 w-full max-w-[480px] self-center border border-[#262626] bg-[#121212]">
-            {/* Box Header Banner */}
-            <View className="flex-row items-center justify-between border-b border-[#262626] bg-[#1A1A1A] px-4 py-2">
-              <Text
-                style={{ fontFamily: MONO_FONT }}
-                className="text-[10px] font-bold uppercase tracking-wider text-[#EAEAEA]">
-                [ AUTH_INTERFACE // TTY_01 ]
-              </Text>
-              <Text
-                style={{ fontFamily: MONO_FONT }}
-                className="text-[10px] uppercase text-[#737373]">
-                SEC-ID: #8490-X
-              </Text>
-            </View>
-
-            <View className="p-5 gap-5">
-              {/* Field 1: Operator ID */}
-              <View className="gap-2">
-                <View className="flex-row justify-between items-center">
-                  <Text
-                    style={{ fontFamily: MONO_FONT }}
-                    className="text-[11px] font-bold uppercase tracking-wider text-[#D4D4D4]">
-                    &lt; 01 // OPERATOR_ID &gt;
-                  </Text>
-                  <Text
-                    style={{ fontFamily: MONO_FONT }}
-                    className="text-[10px] text-[#737373]">
-                    REQUIRED
-                  </Text>
-                </View>
-                <TextInput
-                  accessibilityLabel="Operator ID"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  onFocus={() => setUserFocused(true)}
-                  onBlur={() => setUserFocused(false)}
-                  onChangeText={(value) => {
-                    setUsername(value);
-                    setMessage('');
-                  }}
-                  onSubmitEditing={() => passwordInput.current?.focus()}
-                  placeholder="USER_NAME"
-                  placeholderTextColor="#404040"
-                  returnKeyType="next"
-                  selectionColor="#FF2A2A"
-                  style={{ fontFamily: MONO_FONT }}
-                  className={`min-h-[48px] rounded-none border px-3 text-sm text-[#EAEAEA] bg-[#0A0A0A] ${
-                    userFocused ? 'border-[#EAEAEA]' : 'border-[#262626]'
-                  }`}
-                  textContentType="username"
-                  value={username}
-                />
-              </View>
-
-              {/* Field 2: Cryptographic Key */}
-              <View className="gap-2">
-                <View className="flex-row justify-between items-center">
-                  <Text
-                    style={{ fontFamily: MONO_FONT }}
-                    className="text-[11px] font-bold uppercase tracking-wider text-[#D4D4D4]">
-                    &lt; 02 // ACCESS_KEY &gt;
-                  </Text>
-                  <Text
-                    style={{ fontFamily: MONO_FONT }}
-                    className="text-[10px] text-[#737373]">
-                    MASKED
-                  </Text>
-                </View>
-                <TextInput
-                  ref={passwordInput}
-                  accessibilityLabel="Access Key"
-                  autoCapitalize="none"
-                  onFocus={() => setPassFocused(true)}
-                  onBlur={() => setPassFocused(false)}
-                  onChangeText={(value) => {
-                    setPassword(value);
-                    setMessage('');
-                  }}
-                  onSubmitEditing={handleSignIn}
-                  placeholder="••••••••••••"
-                  placeholderTextColor="#404040"
-                  returnKeyType="done"
-                  secureTextEntry
-                  selectionColor="#FF2A2A"
-                  style={{ fontFamily: MONO_FONT }}
-                  className={`min-h-[48px] rounded-none border px-3 text-sm text-[#EAEAEA] bg-[#0A0A0A] ${
-                    passFocused ? 'border-[#EAEAEA]' : 'border-[#262626]'
-                  }`}
-                  textContentType="password"
-                  value={password}
-                />
-              </View>
-
-              {/* Alert Feedback */}
-              {message ? (
-                <View className="border-l-2 border-[#FF2A2A] bg-[#1E0D0D] p-3">
-                  <Text
-                    accessibilityLiveRegion="polite"
-                    style={{ fontFamily: MONO_FONT }}
-                    className="text-[11px] font-bold uppercase tracking-wide text-[#FF5555]">
-                    [ ! ] {message}
-                  </Text>
-                </View>
-              ) : null}
-
-              {/* Submit Trigger */}
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+          className="px-4 py-4"
+        >
+          <View className="max-w-[420px] w-full mx-auto flex-1 justify-between">
+            {/* Top Navigation Bar */}
+            <View className="flex-row items-center justify-between h-12 w-full mb-2">
               <Pressable
-                accessibilityRole="button"
-                onPress={handleSignIn}
-                className="mt-2 min-h-[50px] flex-row items-center justify-center rounded-none bg-[#EAEAEA] active:bg-[#FF2A2A] px-4">
-                {({ pressed }) => (
-                  <Text
-                    style={{ fontFamily: MONO_FONT }}
-                    className={`text-xs font-black uppercase tracking-widest ${
-                      pressed ? 'text-white' : 'text-[#0A0A0A]'
-                    }`}>
-                    INITIALIZE SESSION &gt;&gt;&gt;
-                  </Text>
-                )}
+                accessibilityLabel="Go back"
+                className="w-10 h-10 items-center justify-center rounded-full active:bg-surface-container"
+              >
+                <Ionicons name="arrow-back" size={22} color="#404940" />
               </Pressable>
+              <Pressable className="px-3 py-1.5 rounded-full active:bg-surface-container">
+                <Text className="text-on-surface-variant font-medium text-xs">
+                  Skip to App
+                </Text>
+              </Pressable>
+            </View>
 
-              {/* Telemetry Barcode Graphic */}
-              <View className="mt-2 pt-3 border-t border-[#262626] flex-row items-center justify-between">
-                <Text
-                  style={{ fontFamily: MONO_FONT }}
-                  className="text-[10px] text-[#525252] tracking-tighter">
-                  ||| | ||||| || |||| ||| || | ||
+            {/* Branding Anchor */}
+            <View className="items-center text-center mt-2 mb-6">
+              <View className="items-center justify-center w-14 h-14 rounded-2xl bg-primary-container shadow-sm mb-3">
+                <MaterialCommunityIcons name="gas-station" size={30} color="#FFFFFF" />
+              </View>
+              <Text className="text-2xl font-bold text-primary tracking-tight">
+                Gaspas
+              </Text>
+            </View>
+
+            {/* Login Form Card */}
+            <View className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 shadow-sm mb-5">
+              {/* Identifier Field */}
+              <View className="mb-4">
+                <Text className="text-xs font-semibold text-on-surface-variant mb-1.5">
+                  Email or Phone Number
                 </Text>
-                <Text
-                  style={{ fontFamily: MONO_FONT }}
-                  className="text-[9px] uppercase tracking-widest text-[#525252]">
-                  DIGEST: 0x9B44F
+                <View className="relative justify-center">
+                  <View className="absolute left-3.5 z-10 pointer-events-none">
+                    <MaterialCommunityIcons name="email-outline" size={20} color="#707a6f" />
+                  </View>
+                  <TextInput
+                    value={identifier}
+                    onChangeText={setIdentifier}
+                    placeholder="farhan@example.com or +62 812..."
+                    placeholderTextColor="#707a6f"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    className="w-full h-[52px] pl-11 pr-4 bg-background border border-outline-variant/60 rounded-xl text-sm text-on-surface focus:border-primary-container"
+                  />
+                </View>
+              </View>
+
+              {/* Password Field */}
+              <View className="mb-4">
+                <Text className="text-xs font-semibold text-on-surface-variant mb-1.5">
+                  Password
                 </Text>
+                <View className="relative justify-center">
+                  <View className="absolute left-3.5 z-10 pointer-events-none">
+                    <MaterialCommunityIcons name="lock-outline" size={20} color="#707a6f" />
+                  </View>
+                  <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Enter your password"
+                    placeholderTextColor="#707a6f"
+                    secureTextEntry={!showPassword}
+                    className="w-full h-[52px] pl-11 pr-12 bg-background border border-outline-variant/60 rounded-xl text-sm text-on-surface focus:border-primary-container"
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 p-1"
+                    accessibilityLabel="Toggle password visibility"
+                  >
+                    <Ionicons
+                      name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                      size={20}
+                      color="#707a6f"
+                    />
+                  </Pressable>
+                </View>
+              </View>
+
+              {/* Utility Row: Remember Me & Forgot Password */}
+              <View className="flex-row items-center justify-between pt-1 mb-4">
+                <Pressable
+                  onPress={() => setRememberMe(!rememberMe)}
+                  className="flex-row items-center gap-2"
+                >
+                  <View
+                    className={`w-4 h-4 rounded items-center justify-center border ${
+                      rememberMe
+                        ? 'bg-primary-container border-primary-container'
+                        : 'border-outline-variant'
+                    }`}
+                  >
+                    {rememberMe && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
+                  </View>
+                  <Text className="text-xs text-on-surface-variant">Remember me</Text>
+                </Pressable>
+                <Pressable>
+                  <Text className="text-xs font-semibold text-primary-container">
+                    Forgot password?
+                  </Text>
+                </Pressable>
+              </View>
+
+              {/* Primary Action Button */}
+              <Pressable
+                onPress={handleLogin}
+                className="w-full h-[50px] bg-primary-container active:bg-primary rounded-xl flex-row items-center justify-center gap-2 shadow-sm"
+              >
+                <Text className="text-on-primary font-semibold text-sm">Log In</Text>
+              </Pressable>
+            </View>
+
+            {/* Social Authentication Splitter */}
+            <View className="mb-6">
+              <View className="relative flex-row items-center justify-center my-2">
+                <Text className="text-[11px] font-medium text-outline uppercase tracking-wider">
+                    Or continue with
+                </Text>
+              </View>
+
+              {/* Social Buttons Grid */}
+              <View className="flex-row gap-3 pt-3">
+                {/* Google SSO */}
+                <Pressable className="flex-1 h-12 border border-outline-variant/50 bg-surface-container-lowest active:bg-surface-container-low rounded-xl flex-row items-center justify-center gap-2.5">
+                  <GoogleIcon />
+                  <Text className="text-sm font-medium text-on-surface">Google</Text>
+                </Pressable>
+
+                {/* WhatsApp */}
+                <Pressable className="flex-1 h-12 border border-outline-variant/50 bg-surface-container-lowest active:bg-surface-container-low rounded-xl flex-row items-center justify-center gap-2">
+                  <Ionicons name="logo-whatsapp" size={20} color="#25D366" />
+                  <Text className="text-sm font-medium text-on-surface">WhatsApp</Text>
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Footer */}
+            <View className="mt-auto pt-4 pb-2 items-center">
+              <View className="flex-row items-center">
+                <Text className="text-sm text-on-surface-variant">
+                  Don't have an account?
+                </Text>
+                <Pressable className="ml-1">
+                  <Text className="text-sm font-semibold text-primary-container">
+                    Sign up
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
-
-          {/* Bottom Telemetry & Legal Warning */}
-          <View className="border-t border-[#262626] pt-4">
-            <View className="flex-row justify-between items-center">
-              <Text
-                style={{ fontFamily: MONO_FONT }}
-                className="text-[9px] uppercase tracking-wider text-[#525252]">
-                CLASSIFIED DATA ENCLAVE &copy; 2026
-              </Text>
-              <Text
-                style={{ fontFamily: MONO_FONT }}
-                className="text-[9px] uppercase tracking-wider text-[#525252]">
-                IP_LOGGED: 192.0.2.1
-              </Text>
-            </View>
-            <Text
-              style={{ fontFamily: MONO_FONT }}
-              className="mt-1 text-[8px] uppercase tracking-tight text-[#404040]">
-              WARNING: UNAUTHORIZED ACCESS VIOLATES DEFENSE DIRECTIVE 10-B. ACTIONS ARE MONITORED IN REAL-TIME.
-            </Text>
-          </View>
-
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+// Google SVG Icon Component
+function GoogleIcon() {
+  return (
+    <Svg width={16} height={16} viewBox="0 0 24 24">
+      <Path
+        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"
+        fill="#4285F4"
+      />
+      <Path
+        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.13C3.27 21.43 7.35 24 12 24z"
+        fill="#34A853"
+      />
+      <Path
+        d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.13z"
+        fill="#FBBC05"
+      />
+      <Path
+        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.94 1.19 15.24 0 12 0 7.35 0 3.27 2.57 1.25 6.58l4.03 3.13c.95-2.83 3.6-4.96 6.72-4.96z"
+        fill="#EA4335"
+      />
+    </Svg>
   );
 }
