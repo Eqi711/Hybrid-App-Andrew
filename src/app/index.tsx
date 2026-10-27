@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
     KeyboardAvoidingView,
@@ -13,14 +14,14 @@ import {
 import Svg, { Path } from 'react-native-svg';
 
 export default function LoginScreen() {
+  const router = useRouter();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
   const handleLogin = () => {
-    // Front-end UI stage: Handle login interaction or navigation here
-    console.log({ identifier, password, rememberMe });
+    router.push('/dashboard' as any);
   };
 
   return (
@@ -43,7 +44,10 @@ export default function LoginScreen() {
               >
                 <Ionicons name="arrow-back" size={22} color="#404940" />
               </Pressable>
-              <Pressable className="px-3 py-1.5 rounded-full active:bg-surface-container">
+              <Pressable
+                onPress={() => router.push('/dashboard' as any)}
+                className="px-3 py-1.5 rounded-full active:bg-surface-container"
+              >
                 <Text className="text-on-surface-variant font-medium text-xs">
                   Skip to App
                 </Text>
