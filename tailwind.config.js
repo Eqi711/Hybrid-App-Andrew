@@ -1,5 +1,7 @@
 // tailwind.config.js
 module.exports = {
+  darkmode: "class", 
+  darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
