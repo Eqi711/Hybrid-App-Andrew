@@ -1,6 +1,10 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { Button } from '@/components/global/Button';
+import { Card } from '@/components/global/Card';
+import { PasswordField } from '@/components/global/PasswordField';
+import { TextField } from '@/components/global/TextField';
 import {
     KeyboardAvoidingView,
     Platform,
@@ -8,7 +12,6 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -17,7 +20,6 @@ export default function LoginScreen() {
   const router = useRouter();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
   const handleLogin = () => {
@@ -65,57 +67,28 @@ export default function LoginScreen() {
             </View>
 
             {/* Login Form Card */}
-            <View className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 shadow-sm mb-5">
+            <Card padding="large" className="mb-5">
               {/* Identifier Field */}
               <View className="mb-4">
-                <Text className="text-xs font-semibold text-on-surface-variant mb-1.5">
-                  Email or Phone Number
-                </Text>
-                <View className="relative justify-center">
-                  <View className="absolute left-3.5 z-10 pointer-events-none">
-                    <MaterialCommunityIcons name="email-outline" size={20} color="#707a6f" />
-                  </View>
-                  <TextInput
-                    value={identifier}
-                    onChangeText={setIdentifier}
-                    placeholder="farhan@example.com or +62 812..."
-                    placeholderTextColor="#707a6f"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    className="w-full h-[52px] pl-11 pr-4 bg-background border border-outline-variant/60 rounded-xl text-sm text-on-surface focus:border-primary-container"
-                  />
-                </View>
+                <TextField
+                  label="Email or Phone Number"
+                  icon="email-outline"
+                  value={identifier}
+                  onChangeText={setIdentifier}
+                  placeholder="farhan@example.com or +62 812..."
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
               </View>
 
               {/* Password Field */}
               <View className="mb-4">
-                <Text className="text-xs font-semibold text-on-surface-variant mb-1.5">
-                  Password
-                </Text>
-                <View className="relative justify-center">
-                  <View className="absolute left-3.5 z-10 pointer-events-none">
-                    <MaterialCommunityIcons name="lock-outline" size={20} color="#707a6f" />
-                  </View>
-                  <TextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Enter your password"
-                    placeholderTextColor="#707a6f"
-                    secureTextEntry={!showPassword}
-                    className="w-full h-[52px] pl-11 pr-12 bg-background border border-outline-variant/60 rounded-xl text-sm text-on-surface focus:border-primary-container"
-                  />
-                  <Pressable
-                    onPress={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 p-1"
-                    accessibilityLabel="Toggle password visibility"
-                  >
-                    <Ionicons
-                      name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                      size={20}
-                      color="#707a6f"
-                    />
-                  </Pressable>
-                </View>
+                <PasswordField
+                  label="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Enter your password"
+                />
               </View>
 
               {/* Utility Row: Remember Me & Forgot Password */}
@@ -143,13 +116,8 @@ export default function LoginScreen() {
               </View>
 
               {/* Primary Action Button */}
-              <Pressable
-                onPress={handleLogin}
-                className="w-full h-[50px] bg-primary-container active:bg-primary rounded-xl flex-row items-center justify-center gap-2 shadow-sm"
-              >
-                <Text className="text-on-primary font-semibold text-sm">Log In</Text>
-              </Pressable>
-            </View>
+              <Button title="Log In" onPress={handleLogin} />
+            </Card>
 
             {/* Social Authentication Splitter */}
             <View className="mb-6">

@@ -1,4 +1,5 @@
 import { MetricCard } from '@/components/dashboard/metricCard';
+import { Card } from '@/components/global/Card';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -84,7 +85,7 @@ export default function DashboardScreen() {
           </View>
 
           {/* Weekly Distance Chart */}
-          <View className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm">
+          <Card>
             <View className="flex-row items-center justify-between mb-4">
               <View>
                 <Text className="text-sm font-bold text-on-surface">Kilometers Per Day</Text>
@@ -122,7 +123,7 @@ export default function DashboardScreen() {
                 </Text>
               ))}
             </View>
-          </View>
+          </Card>
         </View>
       </ScrollView>
     </SafeAreaView>
