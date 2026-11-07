@@ -1,5 +1,7 @@
+import { MetricCard } from '@/components/dashboard/metricCard';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+
 import {
   Pressable,
   SafeAreaView,
@@ -17,6 +19,13 @@ const WEEK_DATA = [
   { day: 'Sat', km: 78 },
   { day: 'Sun', km: 18 },
 ];
+
+const METRICS = [
+  { icon: 'gas-station-outline', label: 'Fuel & Price', value: 'RON 92', caption: '$1.28 / L' },
+  { icon: 'speedometer', label: 'Total Driven', value: '14,820 km', caption: '+320 km this week' },
+  { icon: 'fuel', label: 'Gas Consumed', value: '24.6 L', caption: 'This week' },
+  { icon: 'leaf', label: 'Efficiency', value: '7.7 L / 100km', caption: 'Avg. consumption' },
+] as const;
 
 const MAX_KM = Math.max(...WEEK_DATA.map((d) => d.km));
 
@@ -61,46 +70,17 @@ export default function DashboardScreen() {
             <Text className="text-xl font-bold text-on-primary">Honda Civic RS (2023)</Text>
             <Text className="text-xs text-primary-fixed mt-0.5">License: B 1234 GAS • Tank: 47 L</Text>
           </View>
-
+          
           {/* Fuel & Mileage Grid */}
           <View className="flex-row gap-3 mb-3">
-            <View className="flex-1 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm">
-              <View className="flex-row items-center gap-1.5 mb-1.5">
-                <MaterialCommunityIcons name="gas-station-outline" size={18} color="#166534" />
-                <Text className="text-xs font-semibold text-on-surface-variant">Fuel & Price</Text>
-              </View>
-              <Text className="text-base font-bold text-on-surface">RON 92</Text>
-              <Text className="text-xs text-outline">$1.28 / L</Text>
-            </View>
-
-            <View className="flex-1 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm">
-              <View className="flex-row items-center gap-1.5 mb-1.5">
-                <MaterialCommunityIcons name="speedometer" size={18} color="#166534" />
-                <Text className="text-xs font-semibold text-on-surface-variant">Total Driven</Text>
-              </View>
-              <Text className="text-base font-bold text-on-surface">14,820 km</Text>
-              <Text className="text-xs text-outline">+320 km this week</Text>
-            </View>
+            <MetricCard {...METRICS[0]} />
+            <MetricCard {...METRICS[1]} />
           </View>
 
+          {/* Consumption & Efficiency Grid */}
           <View className="flex-row gap-3 mb-4">
-            <View className="flex-1 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm">
-              <View className="flex-row items-center gap-1.5 mb-1.5">
-                <MaterialCommunityIcons name="fuel" size={18} color="#166534" />
-                <Text className="text-xs font-semibold text-on-surface-variant">Gas Consumed</Text>
-              </View>
-              <Text className="text-base font-bold text-on-surface">24.6 L</Text>
-              <Text className="text-xs text-outline">This week</Text>
-            </View>
-
-            <View className="flex-1 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm">
-              <View className="flex-row items-center gap-1.5 mb-1.5">
-                <MaterialCommunityIcons name="leaf" size={18} color="#166534" />
-                <Text className="text-xs font-semibold text-on-surface-variant">Efficiency</Text>
-              </View>
-              <Text className="text-base font-bold text-on-surface">7.7 L / 100km</Text>
-              <Text className="text-xs text-outline">Avg. consumption</Text>
-            </View>
+            <MetricCard {...METRICS[2]} />
+            <MetricCard {...METRICS[3]} />
           </View>
 
           {/* Weekly Distance Chart */}
@@ -114,6 +94,8 @@ export default function DashboardScreen() {
                 {WEEK_DATA.reduce((sum, d) => sum + d.km, 0)} km total
               </Text>
             </View>
+
+
 
             {/* Native CSS flex bar chart */}
             <View className="h-36 flex-row items-end justify-between pt-4 px-1 border-b border-outline-variant/30">
