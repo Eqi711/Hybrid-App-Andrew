@@ -20,8 +20,41 @@ export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const validateName = (value: string) =>
+    value.trim() ? '' : 'Full name is required.';
+
+  const validateEmail = (value: string) => {
+    if (!value.trim()) {
+      return 'Email address is required.';
+    }
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+      ? ''
+      : 'Please enter a valid email address.';
+  };
+
+  const validatePassword = (value: string) => {
+    if (!value.trim()) {
+      return 'Password is required.';
+    }
+    return value.length >= 8 ? '' : 'Password must be at least 8 characters.';
+  };
 
   const handleRegister = () => {
+    const nextNameError = validateName(name);
+    const nextEmailError = validateEmail(email);
+    const nextPasswordError = validatePassword(password);
+    setNameError(nextNameError);
+    setEmailError(nextEmailError);
+    setPasswordError(nextPasswordError);
+
+    if (nextNameError || nextEmailError || nextPasswordError) {
+      return;
+    }
+
     router.push('/dashboard');
   };
 
@@ -73,11 +106,19 @@ export default function RegisterScreen() {
                   label="Full Name"
                   icon="account-outline"
                   value={name}
-                  onChangeText={setName}
+                  onChangeText={(value) => {
+                    setName(value);
+                    if (nameError) {
+                      setNameError(validateName(value));
+                    }
+                  }}
                   placeholder="Your name"
                   autoCapitalize="words"
                   autoComplete="name"
                 />
+                {nameError ? (
+                  <Text className="mt-1 text-xs text-red-600">{nameError}</Text>
+                ) : null}
               </View>
 
               <View className="mb-4">
@@ -85,22 +126,38 @@ export default function RegisterScreen() {
                   label="Email Address"
                   icon="email-outline"
                   value={email}
-                  onChangeText={setEmail}
+                  onChangeText={(value) => {
+                    setEmail(value);
+                    if (emailError) {
+                      setEmailError(validateEmail(value));
+                    }
+                  }}
                   placeholder="you@example.com"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoComplete="email"
                 />
+                {emailError ? (
+                  <Text className="mt-1 text-xs text-red-600">{emailError}</Text>
+                ) : null}
               </View>
 
               <View className="mb-5">
                 <PasswordField
                   label="Password"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={(value) => {
+                    setPassword(value);
+                    if (passwordError) {
+                      setPasswordError(validatePassword(value));
+                    }
+                  }}
                   placeholder="Create a password"
                   autoComplete="new-password"
                 />
+                {passwordError ? (
+                  <Text className="mt-1 text-xs text-red-600">{passwordError}</Text>
+                ) : null}
               </View>
 
               <Button title="Create Account" onPress={handleRegister} />

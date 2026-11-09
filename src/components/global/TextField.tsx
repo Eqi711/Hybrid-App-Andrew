@@ -29,7 +29,7 @@ export function TextField({
       </Text>
       <View
         className={`relative h-[52px] w-full justify-center rounded-xl border bg-background ${
-          isFocused ? 'border-2 border-primary-container' : 'border-outline-variant/60'
+          isFocused ? 'border-2 border-primary-container' : 'border-primary-container/40'
         }`}
       >
         {icon && (
@@ -48,7 +48,7 @@ export function TextField({
             onBlur?.(event);
           }}
           placeholderTextColor="#707a6f"
-          className={`h-full w-full bg-transparent text-sm text-on-surface ${icon ? 'pl-11' : 'pl-4'} ${trailing ? 'pr-12' : 'pr-4'}`}
+          className={`h-full w-full bg-transparent text-sm text-on-surface outline-none ${icon ? 'pl-11' : 'pl-4'} ${trailing ? 'pr-12' : 'pr-4'}`}
         />
         {trailing}
       </View>

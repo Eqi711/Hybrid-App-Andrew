@@ -14,6 +14,7 @@ export default function MainTabsLayout() {
         name="dashboard"
         options={{
           title: 'Dashboard',
+          headerShown: false,
           tabBarAccessibilityLabel: 'Dashboard',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color as string} />
@@ -24,6 +25,7 @@ export default function MainTabsLayout() {
         name="vehicle"
         options={{
           title: 'Vehicle',
+          headerShown: false,
           tabBarAccessibilityLabel: 'Choose vehicle',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="car-outline" size={size} color={color as string} />

@@ -21,8 +21,42 @@ export default function LoginScreen() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
+  const [identifierError, setIdentifierError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const validateIdentifier = (value: string) => {
+    const trimmedValue = value.trim();
+    if (!trimmedValue) {
+      return 'Email or phone number is required.';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (trimmedValue.includes('@')) {
+      return emailRegex.test(trimmedValue)
+        ? ''
+        : 'Please enter a valid email address.';
+    }
+
+    const digits = trimmedValue.replace(/\D/g, '');
+    const phoneRegex = /^\+?[\d\s()-]+$/;
+    return phoneRegex.test(trimmedValue) && digits.length >= 7 && digits.length <= 15
+      ? ''
+      : 'Please enter a valid email address or phone number.';
+  };
+
+  const validatePassword = (value: string) =>
+    value.trim() ? '' : 'Password is required.';
 
   const handleLogin = () => {
+    const nextIdentifierError = validateIdentifier(identifier);
+    const nextPasswordError = validatePassword(password);
+    setIdentifierError(nextIdentifierError);
+    setPasswordError(nextPasswordError);
+
+    if (nextIdentifierError || nextPasswordError) {
+      return;
+    }
+
     router.push('/dashboard' as any);
   };
 
@@ -74,11 +108,19 @@ export default function LoginScreen() {
                   label="Email or Phone Number"
                   icon="email-outline"
                   value={identifier}
-                  onChangeText={setIdentifier}
+                  onChangeText={(value) => {
+                    setIdentifier(value);
+                    if (identifierError) {
+                      setIdentifierError(validateIdentifier(value));
+                    }
+                  }}
                   placeholder="farhan@example.com or +62 812..."
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
+                {identifierError ? (
+                  <Text className="mt-1 text-xs text-red-600">{identifierError}</Text>
+                ) : null}
               </View>
 
               {/* Password Field */}
@@ -86,9 +128,17 @@ export default function LoginScreen() {
                 <PasswordField
                   label="Password"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={(value) => {
+                    setPassword(value);
+                    if (passwordError) {
+                      setPasswordError(validatePassword(value));
+                    }
+                  }}
                   placeholder="Enter your password"
                 />
+                {passwordError ? (
+                  <Text className="mt-1 text-xs text-red-600">{passwordError}</Text>
+                ) : null}
               </View>
 
               {/* Utility Row: Remember Me & Forgot Password */}
