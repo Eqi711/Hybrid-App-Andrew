@@ -1,7 +1,15 @@
 Gregorius Andrew Rahardja 2802418090
+
+Video Demo: https://drive.google.com/drive/folders/1575yGx3P3bPbOhLl5SHIXWnve-4hGAkQ?usp=sharing
+
 # Gaspas
 
 Gaspas merupakan aplikasi untuk mencatat trip analytics dan menghitung trip cost berbasis React Native dan Expo SDK 58. Project ini dirancang untuk membantu user memantau kendaraan dan merencanakan estimasi biaya perjalanan secara akurat.
+
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-4.png)
 
 ---
 
