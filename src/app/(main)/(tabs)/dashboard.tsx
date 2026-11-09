@@ -1,15 +1,16 @@
-import { MetricCard } from '@/components/dashboard/metricCard';
+import { MetricCard } from '@/components/dashboard/MetricCard';
 import { Card } from '@/components/global/Card';
+import { DEFAULT_VEHICLE_ID, VEHICLES } from '@/components/vehicles/vehicles';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import {
   Pressable,
-  SafeAreaView,
   ScrollView,
   Text,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const WEEK_DATA = [
   { day: 'Mon', km: 38 },
@@ -32,6 +33,10 @@ const MAX_KM = Math.max(...WEEK_DATA.map((d) => d.km));
 
 export default function DashboardScreen() {
   const router = useRouter();
+  const { vehicleId } = useLocalSearchParams<{ vehicleId?: string }>();
+  const vehicle =
+    VEHICLES.find((item) => item.id === vehicleId) ??
+    VEHICLES.find((item) => item.id === DEFAULT_VEHICLE_ID)!;
 
   return (
     <SafeAreaView className="flex-1 bg-background">
@@ -59,7 +64,17 @@ export default function DashboardScreen() {
           </View>
 
           {/* Current Car Card */}
-          <View className="bg-primary-container rounded-2xl p-5 mb-4 shadow-sm">
+          <Pressable
+            onPress={() =>
+              router.navigate({
+                pathname: '/(main)/(tabs)/vehicle',
+                params: { vehicleId: vehicle.id },
+              })
+            }
+            accessibilityRole="button"
+            accessibilityLabel={`Change vehicle. Current vehicle: ${vehicle.make} ${vehicle.model}`}
+            className="bg-primary-container rounded-2xl p-5 mb-4 shadow-sm active:opacity-90"
+          >
             <View className="flex-row items-center justify-between mb-3">
               <View className="w-10 h-10 rounded-xl bg-primary items-center justify-center">
                 <MaterialCommunityIcons name="car-side" size={24} color="#a6f4b5" />
@@ -68,9 +83,19 @@ export default function DashboardScreen() {
                 <Text className="text-[11px] font-semibold text-primary-fixed">Active Vehicle</Text>
               </View>
             </View>
-            <Text className="text-xl font-bold text-on-primary">Honda Civic RS (2023)</Text>
-            <Text className="text-xs text-primary-fixed mt-0.5">License: B 1234 GAS • Tank: 47 L</Text>
-          </View>
+            <Text className="text-xl font-bold text-on-primary">
+              {vehicle.make} {vehicle.model} ({vehicle.year})
+            </Text>
+            <Text className="text-xs text-primary-fixed mt-0.5">
+              License: {vehicle.licensePlate} • Tank: {vehicle.tankCapacity} L
+            </Text>
+            <View className="mt-3 flex-row items-center">
+              <Text className="text-xs font-semibold text-primary-fixed">
+                Change vehicle
+              </Text>
+              <Ionicons name="chevron-forward" size={14} color="#d3f8d4" />
+            </View>
+          </Pressable>
           
           {/* Fuel & Mileage Grid */}
           <View className="flex-row gap-3 mb-3">

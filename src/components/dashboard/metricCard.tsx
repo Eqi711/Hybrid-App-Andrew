@@ -1,5 +1,5 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from '@/components/global/Card';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
 
 type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];

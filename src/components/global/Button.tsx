@@ -20,7 +20,9 @@ export function Button({
       disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? title}
-      className="h-[50px] w-full flex-row items-center justify-center gap-2 rounded-xl bg-primary-container shadow-sm active:bg-primary"
+      className={`h-[50px] w-full flex-row items-center justify-center gap-2 rounded-xl bg-primary-container shadow-sm ${
+        disabled ? 'opacity-50' : 'active:bg-primary'
+      }`}
     >
       <Text className="text-sm font-semibold text-on-primary">{title}</Text>
     </Pressable>
