@@ -1,56 +1,105 @@
-# Welcome to your Expo app 👋
+Gregorius Andrew Rahardja 2802418090
+# Gaspas
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Gaspas merupakan aplikasi untuk mencatat trip analytics dan menghitung trip cost berbasis React Native dan Expo SDK 58. Project ini dirancang untuk membantu user memantau kendaraan dan merencanakan estimasi biaya perjalanan secara akurat.
 
-## Get started
+---
 
-1. Install dependencies
+## [LO 1 – 5 Points] Penjelasan Konsep
 
-   ```bash
-   npm install
-   ```
+### 1. Cara Kerja React Native
+React Native merupakan framework berbasis JavaScript dan React untuk membangun aplikasi mobile multiplatform (Android dan iOS) dengan menggunakan cukup satu codebase. React Native tidak merender HTML di dalam browser internal, melainkan merender komponen native UI ke platform target.
 
-2. Start the app
+Arsitektur react native mengeksekusi logika aplikasi di *JavaScript Thread* dan interface di *UI/Native Thread*. Keduanya berkomunikasi melalui *Bridge* asinkron atau *New Architecture* menggunakan JSI (*JavaScript Interface*), Fabric Renderer, dan TurboModules. Instruksi JavaScript dieksekusi langsung ke kode native C++ tanpa serialisasi JSON berat sehingga animasi stabil 60 FPS dan performa setara aplikasi native.
 
-   ```bash
-   npx expo start
-   ```
+### 2. Keunggulan React Native untuk Aplikasi Hybrid
+1. Mengompilasi JSX langsung menjadi elemen interface native OS (seperti `UIView` di iOS dan `ViewGroup` di Android) sehingga jauh lebih responsive dan gestur sentuh yang jauh lebih halus dibanding WebView.
+2. Developer dapat membagikan 85–95% logika bisnis dan tampilan untuk Android, iOS, serta Web, sehingga siklus pengembangan dan biaya pemeliharaan dapat diminimalisir.
+3. Fitur *Fast Refresh* memperbarui kode secara langsung di layar tanpa me-reset state aplikasi. Integrasi fitur hardware seperti kamera, lokasi, dan sensor akselerometer menjadi sangat cepat dan terstandarisasi dengan adanya library npm dan Expo SDK.
 
-In the output, you'll find options to open the app in a
+### 3. Komponen, Props, State, dan Navigasi
+- **Komponen:** Merupakan unit modular penyusun interface yang mengembalikan elemen visual JSX.
+- **Props:** Argumen atau data *read-only* dari komponen induk ke anak untuk konfigurasi data.
+- **State:** Merupakan data internal reaktif. Perubahan state dilakukan via *setter* yang mengakibatkan render ulang otomatis.
+- **Navigasi:** Merupakan transisi antar screen (Stack bertingkat atau Tabs bawah), seperti yang dikelola oleh Expo Router.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 4. Contoh Kode Implementasi Konsep
+```tsx
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+// 1. Props
+interface FuelProps {
+  vehicle: string;
+  initialFuel: number;
+}
 
-## Get a fresh project
+// 2. Komponen
+export function FuelWidget({ vehicle, initialFuel }: FuelProps) {
+  // 3. State (Data dinamis reaktif)
+  const [fuel, setFuel] = useState<number>(initialFuel);
+  
+  // 4. Navigasi
+  const router = useRouter();
 
-When you're ready, run:
+  return (
+    <View style={styles.card}>
+      <Text style={styles.title}>{vehicle}</Text>
+      <Text>Tingkat BBM: {fuel}%</Text>
+      
+      <TouchableOpacity onPress={() => setFuel(100)}>
+        <Text style={styles.link}>Isi Tangki Penuh</Text>
+      </TouchableOpacity>
 
-```bash
-npm run reset-project
+      <TouchableOpacity onPress={() => router.push('/(main)/(tabs)/trips')}>
+        <Text style={styles.navLink}>Rencanakan Perjalanan &rarr;</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: { padding: 16, borderRadius: 12, backgroundColor: '#f4f6f4' },
+  title: { fontSize: 16, fontWeight: 'bold' },
+  link: { color: '#216c2e', marginVertical: 4 },
+  navLink: { color: '#005ac1', marginTop: 4 },
+});
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## [LO 3 – 10 Points] Analisis Kebutuhan
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### 1. Masalah
+Pengemudi mobil dan pengelola kendaraan operasional sering menghadapi tantangan dalam:
+- Sulitnya memantau efisiensi konsumsi bbm secara transparan.
+- Kurangnya alat praktis untuk menghitung perkiraan biaya sebelum perjalanan dimulai.
+- Kesulitan mengelola dan membandingkan aktivitas beberapa kendaraan keluarga atau kendaraan operasional yang berbeda dalam satu interface.
 
-## Learn more
+### 2. Target Pengguna
+1. **Komuter Harian & Pemilik Kendaraan Pribadi:** Pengguna yang memakai kendaraan untuk perjalanan kerja rutin dan ingin mengefisiensikan anggaran bahan bakar.
+2. **Pengemudi Operasional & Driver Dinas/Logistik:** Pengemudi yang membutuhkan perhitungan estimasi biaya perjalanan (BBM + Tol) untuk perencanaan rute dan pengajuan anggaran perjalanan.
+3. **Keluarga atau Pengelola Kendaraan Multitugas:** Pengguna yang memiliki lebih dari satu mobil dan perlu berganti profil kendaraan aktif guna memantau riwayat aktivitas spesifik tiap mobil.
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3 & 4. User Requirements & Tabel Pemetaan Kebutuhan ke Layar dan Komponen
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+| ID Kebutuhan | User Requirements | Screen / Route | Komponen UI & Fitur Terkait |
+| :--- | :--- | :--- | :--- |
+| **REQ-01** | User dapat login dan sign in akun baru dengan validasi email, telepon, password. | `/(auth)/login`<br>`/(auth)/register` | `TextField`, `PasswordField`, `Button`, `KeyboardAvoidingView`, `SafeAreaView`, fungsi validasi regex email dan nomor handphone. |
+| **REQ-02** | User dapat melihat ringkasan performa kendaraan, konsumsi BBM, jarak tempuh, dan grafik aktivitas. | `/(main)/(tabs)/dashboard` | `MetricCard`, `Card`, diagram batang aktivitas mingguan (`WEEK_DATA`), header profil pengemudi, tombol logout. |
+| **REQ-03** | User dapat menelusuri katalog mobil, melihat status kendaraan, dan memilih kendaraan aktif. | `/(main)/(tabs)/vehicle` | `CarCard`, daftar armada `VEHICLES`, tombol aksi `Button ("Use this vehicle")`, manajemen state `selectedVehicleId`. |
+| **REQ-04** | User dapat menentukan rute asal-tujuan, fitur *swap location*, dan kalkulasi estimasi biaya BBM serta tol. | `/(main)/(tabs)/trips` | `Card`, `Image` peta rute, dua `TextField` (*Origin* & *Destination*), tombol *swap location*, panel ringkasan biaya `ESTIMATE_EXAMPLE`. |
+| **REQ-05** | User dapat berpindah menu via *bottom tabs*, navigasi *stack*, dan logout. | `/(main)/(tabs)/_layout`<br>`/(main)/_layout` | `Tabs` navigasi bawah, ikon visual `@expo/vector-icons` (`Ionicons`), navigasi tumpukan (*Stack*), `useRouter`. |
 
-## Join the community
+### 5. Alasan Keputusan Desain (*Design Decisions Rationale*)
+- **Expo SDK 58 & Expo Router:** Tidak perlu menggunakan boilerplate routing manual karena expo memetakan struktur direktori `src/app` langsung menjadi rute navigasi (*Stack* dan *Tabs*). Parameter antar screen (seperti `vehicleId`) dapat dikirim secara deklaratif dan konsisten.
+- **NativeWind (Tailwind CSS v4):** Mempercepat pengembangan layout responsif menggunakan utilty class modern dengan design stoken standard seperti `bg-background`, `text-on-surface`, dan `surface-container`. Hal ini menjamin konsistensi dan style yang clean.
+- **Hierarki Informasi Berbasis Card & Bento:** Data teknis kendaraan ditampilkan dalam komponen card yang modular (*MetricCard* dan *CarCard*). Pendekatan ini mencegah beban kognitif berlebih bagi user yang membutuhkan informasi cepat dalam hitungan detik.
+- **Mobile Ergonomics:** Seluruh elemen interaktif memiliki target sentuh minimal 44×44 pt sesuai panduan Apple HIG dan Google Material Design. Penggunaan `SafeAreaView` melindungi interface dari gangguan *notch* dan *gesture bar*, serta `KeyboardAvoidingView` memastikan form input tidak terhalang keyboard virtual.
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 6. Rencana Pengembangan
+- **Implementasi Map & GPS:** Menggantikan placeholder map statis pada layar *Trips* dengan integrasi peta dinamis (openStreetMap).
+- **Cloud Backend & Sinkronisasi Multi-Device:** Menghubungkan aplikasi ke layanan backend (seperti Supabase / Firebase / RESTful API) untuk autentikasi terpusat, penyimpanan histori perjalanan di cloud, dan pembaruan harga BBM dinamis dari API publik.
+- **Integrasi Telemetri OBD-II / IoT Sensor:** Menambahkan konektivitas Bluetooth Low Energy (BLE) ke adapter OBD-II kendaraan agar parameter riil (volume tangki, kode error mesin/DTC, dan odometer) dapat dibaca otomatis secara akurat langsung dari ECU mobil.
+- **Analisis AI Hemat BBM & Ekspor Laporan Finansial:** Mengimplementasikan machine learning ringan untuk memberikan saran rute hemat bahan bakar berdasarkan gaya berkendara (*driving style analytics*) serta fitur unduh laporan pengeluaran (format PDF/Excel) untuk kebutuhan *reimbursement* kantor.
