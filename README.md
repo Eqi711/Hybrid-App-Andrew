@@ -1,6 +1,6 @@
 Gregorius Andrew Rahardja 2802418090
 
-Video Demo: https://drive.google.com/drive/folders/1575yGx3P3bPbOhLl5SHIXWnve-4hGAkQ?usp=sharing
+Video Demo and AI Usage Logs & Screenshots: https://drive.google.com/drive/folders/1575yGx3P3bPbOhLl5SHIXWnve-4hGAkQ?usp=sharing
 
 # Gaspas
 
